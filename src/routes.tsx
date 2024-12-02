@@ -13,12 +13,14 @@ import { Route, Routes } from 'react-router-dom';
 import ErrorPage from './pages/Error.page';
 import Layout from './layout/Deafult.layout';
 import Dashboard from './pages/Dashboard.page';
+import StarterPage from './pages/Starter.page';
 
 const RoutesConfig: React.FC = () => {
   return (
    <Layout>
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/" element={<StarterPage />} />
       {/* <Route path="/" element={<SignInPage />} /> */}
       {/* <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
       <Route path="/resumes/create" element={<DashboardLayout><CreateResumePage /></DashboardLayout>} />
