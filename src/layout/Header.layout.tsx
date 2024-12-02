@@ -23,8 +23,8 @@ const Header: React.FC = () => {
       </nav>
       <div className="flex items-center space-x-2">
         <Link to="/profile" className="flex flex-row space-x-2 items-center">
-          <span className="text-[#212121]">John Doe</span>
-          <Avatar alt="John Doe" src="/profile-image.jpg" />
+          <span className="text-[#212121]">Pavel Fedorov</span>
+          <Avatar alt="Pavel Fedorov" src="/profile-image.jpg" />
         </Link>
       </div>
     </header>

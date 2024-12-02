@@ -17,7 +17,7 @@ const StarterPage: React.FC = () => {
           </Typography>
           <Button
             component={Link}
-            to="/create-resume"
+            to="/new"
             variant="contained"
             color="primary"
             size="large"

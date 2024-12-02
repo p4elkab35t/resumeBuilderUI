@@ -12,7 +12,6 @@ const ResumeViewPage: React.FC = () => {
     const fetchResume = async () => {
       setIsLoading(true);
       try {
-        // Replace with your actual backend endpoint
         const response = await axios.get(`/api/resumes/${id}/view`);
         setResumeHtml(response.data.html); // Replace with actual key from backend
       } catch (error) {

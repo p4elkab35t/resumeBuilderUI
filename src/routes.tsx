@@ -15,14 +15,24 @@ import Layout from './layout/Deafult.layout';
 import Dashboard from './pages/Dashboard.page';
 import StarterPage from './pages/Starter.page';
 import ResumeViewPage from './pages/Resume.view.page';
+import ProfilePage from './pages/Profile.page';
+import AuthPage from './pages/Auth.page';
+import ResumeEdit from './pages/Resume.edit.page';
 
 const RoutesConfig: React.FC = () => {
   return (
+    <>
+    <Routes>
+      <Route path="/sign-in" element={<AuthPage />} />
+    </Routes>
    <Layout>
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/" element={<StarterPage />} />
       <Route path="/resumes/:id" element={<ResumeViewPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/new" element={<ResumeEdit />} />
+      <Route path="/resumes/:id/edit" element={<ResumeEdit />} />
       {/* <Route path="/" element={<SignInPage />} /> */}
       {/* <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
       <Route path="/resumes/create" element={<DashboardLayout><CreateResumePage /></DashboardLayout>} />
@@ -33,6 +43,7 @@ const RoutesConfig: React.FC = () => {
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   </Layout>
+  </>
   );
 };
 

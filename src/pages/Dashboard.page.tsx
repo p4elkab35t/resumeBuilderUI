@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Card, CardContent, Typography, Button, Skeleton } from '@mui/material';
 import { CloudUpload, Create } from '@mui/icons-material';
 
@@ -8,22 +8,24 @@ interface Resume {
   name: string;
 }
 
+function useQuery() {
+    const { search } = useLocation();
+  
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
+
 const Dashboard: React.FC = () => {
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
+  const query = useQuery();
 
   useEffect(() => {
     const fetchResumes = async () => {
-      setLoading(true);
-      setTimeout(() => {
-        const data = [
-          { id: 1, name: 'Resume 1' },
-          { id: 2, name: 'Resume 2' },
-          { id: 3, name: 'Resume 3' },
-        ]; // Example data
+      setLoading(true)
+        const response = await fetch('/api/resumes'); // Replace with your API endpoint
+        const data = await response.json();
         setResumes(data);
         setLoading(false);
-      }, 1500); // Simulated API call
     };
 
     fetchResumes();
@@ -52,7 +54,7 @@ const Dashboard: React.FC = () => {
                 <div className="mt-4 flex justify-between">
                   <Button
                     component={Link}
-                    to={`/resume/${resume.id}`}
+                    to={`/resumes/${resume.id}`}
                     size="small"
                     variant="outlined"
                     color="primary"
@@ -61,7 +63,7 @@ const Dashboard: React.FC = () => {
                   </Button>
                   <Button
                     component={Link}
-                    to={`/resume/${resume.id}/edit`}
+                    to={`/resumes/${resume.id}/edit`}
                     size="small"
                     variant="outlined"
                     color="secondary"
@@ -79,7 +81,7 @@ const Dashboard: React.FC = () => {
           <Card
             className="hover:shadow-lg transition-shadow cursor-pointer"
             component={Link}
-            to="/upload-resume"
+            to="/new"
           >
             <CardContent className="flex flex-col items-center">
               <CloudUpload fontSize="large" className="text-gray-600 mb-2" />
@@ -92,7 +94,7 @@ const Dashboard: React.FC = () => {
           <Card
             className="hover:shadow-lg transition-shadow cursor-pointer"
             component={Link}
-            to="/create-resume"
+            to="/new"
           >
             <CardContent className="flex flex-col items-center">
               <Create fontSize="large" className="text-gray-600 mb-2" />
