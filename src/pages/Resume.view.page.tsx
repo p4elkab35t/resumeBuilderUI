@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { Box, Button, Skeleton, Typography } from '@mui/material';
 
 const ResumeViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -9,9 +10,11 @@ const ResumeViewPage: React.FC = () => {
 
   useEffect(() => {
     const fetchResume = async () => {
+      setIsLoading(true);
       try {
+        // Replace with your actual backend endpoint
         const response = await axios.get(`/api/resumes/${id}/view`);
-        setResumeHtml(response.data.html); // Assuming the backend returns `html` as a key
+        setResumeHtml(response.data.html); // Replace with actual key from backend
       } catch (error) {
         console.error('Failed to fetch resume:', error);
       } finally {
@@ -25,7 +28,7 @@ const ResumeViewPage: React.FC = () => {
   const downloadResume = async (format: string) => {
     try {
       const response = await axios.get(`/api/resumes/${id}/download?format=${format}`, {
-        responseType: 'blob', // Important for file downloads
+        responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -35,51 +38,70 @@ const ResumeViewPage: React.FC = () => {
       link.click();
       link.remove();
     } catch (error) {
-      console.error('Failed to download resume:', error);
+      console.error(`Failed to download resume in ${format} format`, error);
     }
   };
 
-  if (isLoading) {
-    return <div className="text-center p-4">Loading resume...</div>;
-  }
-
   return (
-    <div className="flex">
-      {/* Left Side: Resume Display */}
-      <div className="flex-1 border-r p-4">
-        {resumeHtml ? (
-          <div
-            dangerouslySetInnerHTML={{ __html: resumeHtml }}
-            className="resume-preview"
-          />
+    <Box display="flex">
+      {/* Left Side: Resume Preview */}
+      <Box flex={1} p={2}>
+        {isLoading ? (
+          <Skeleton variant="rectangular" width="100%" height={600} animation="wave" />
         ) : (
-          <p>Failed to load resume. Please try again.</p>
+          <Box
+            dangerouslySetInnerHTML={{ __html: resumeHtml || '' }}
+            className="resume-preview"
+            sx={{ overflow: 'auto', height: '100%' }}
+          />
         )}
-      </div>
+      </Box>
 
       {/* Right Side: Download Options */}
-      <div className="w-1/4 p-4 bg-gray-100">
-        <h2 className="text-xl font-bold mb-4">Download Options</h2>
-        <button
-          onClick={() => downloadResume('pdf')}
-          className="w-full bg-blue-500 text-white px-4 py-2 rounded mb-2 hover:bg-blue-600"
-        >
-          Download as PDF
-        </button>
-        <button
-          onClick={() => downloadResume('docx')}
-          className="w-full bg-green-500 text-white px-4 py-2 rounded mb-2 hover:bg-green-600"
-        >
-          Download as DOCX
-        </button>
-        <button
-          onClick={() => downloadResume('txt')}
-          className="w-full bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-        >
-          Download as TXT
-        </button>
-      </div>
-    </div>
+      <Box width="25%" p={2} bgcolor="background.paper">
+        <Typography variant="h6" gutterBottom>
+          Download Options
+        </Typography>
+        {isLoading ? (
+          <Skeleton variant="rectangular" width="100%" height={40} animation="wave" sx={{ mb: 2 }} />
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mb: 2 }}
+            onClick={() => downloadResume('pdf')}
+          >
+            Download as PDF
+          </Button>
+        )}
+        {isLoading ? (
+          <Skeleton variant="rectangular" width="100%" height={40} animation="wave" sx={{ mb: 2 }} />
+        ) : (
+          <Button
+            variant="contained"
+            color="success"
+            fullWidth
+            sx={{ mb: 2 }}
+            onClick={() => downloadResume('docx')}
+          >
+            Download as DOCX
+          </Button>
+        )}
+        {isLoading ? (
+          <Skeleton variant="rectangular" width="100%" height={40} animation="wave" />
+        ) : (
+          <Button
+            variant="contained"
+            color="inherit"
+            fullWidth
+            onClick={() => downloadResume('txt')}
+          >
+            Download as TXT
+          </Button>
+        )}
+      </Box>
+    </Box>
   );
 };
 
