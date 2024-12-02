@@ -14,6 +14,7 @@ import ErrorPage from './pages/Error.page';
 import Layout from './layout/Deafult.layout';
 import Dashboard from './pages/Dashboard.page';
 import StarterPage from './pages/Starter.page';
+import ResumeViewPage from './pages/Resume.view.page';
 
 const RoutesConfig: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const RoutesConfig: React.FC = () => {
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/" element={<StarterPage />} />
+      <Route path="/resumes/:id" element={<ResumeViewPage />} />
       {/* <Route path="/" element={<SignInPage />} /> */}
       {/* <Route path="/dashboard" element={<DashboardLayout><DashboardPage /></DashboardLayout>} />
       <Route path="/resumes/create" element={<DashboardLayout><CreateResumePage /></DashboardLayout>} />
